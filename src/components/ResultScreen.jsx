@@ -27,6 +27,7 @@ export default function ResultScreen({
 }) {
   const [animate, setAnimate] = useState(false)
   const [alreadyUsedToday, setAlreadyUsedToday] = useState(false)
+  const [showFreebiePopup, setShowFreebiePopup] = useState(false)
 
   // Task states
   const [phoneInput, setPhoneInput] = useState(getLastPhone())
@@ -68,6 +69,13 @@ export default function ResultScreen({
   useEffect(() => {
     setTimeout(() => setAnimate(true), 100)
   }, [])
+
+  // Show freebie popup when won
+  useEffect(() => {
+    if (freebie) {
+      setTimeout(() => setShowFreebiePopup(true), 600)
+    }
+  }, [freebie])
 
   // On mount: check if already used today + restore task state
   useEffect(() => {
@@ -270,6 +278,7 @@ export default function ResultScreen({
   // Already used today — show limited view
   if (alreadyUsedToday) {
     return (
+      <>
       <div className="screen result-screen">
         <div className="screen-content">
           <header className="topbar">
@@ -352,11 +361,27 @@ export default function ResultScreen({
           </div>
         </div>
       </div>
+
+      {showFreebiePopup && freebie && (
+        <div className="freebie-popup-overlay" onClick={() => setShowFreebiePopup(false)}>
+          <div className="freebie-popup" onClick={(e) => e.stopPropagation()}>
+            <div className="freebie-popup-icon">🍨</div>
+            <h2 className="freebie-popup-title">You Won a Free Mini Sundae!</h2>
+            <p className="freebie-popup-desc">Worth ₹{freebie.value} — included with your spin!</p>
+            <p className="freebie-popup-hint">Show this at the counter to claim</p>
+            <button className="freebie-popup-btn" onClick={() => setShowFreebiePopup(false)}>
+              Awesome!
+            </button>
+          </div>
+        </div>
+      )}
+      </>
     )
   }
 
   // Normal flow
   return (
+    <>
     <div className="screen result-screen">
       <div className="confetti-container">
         {[...Array(20)].map((_, i) => (
@@ -562,5 +587,20 @@ export default function ResultScreen({
         </div>
       </div>
     </div>
+
+    {showFreebiePopup && freebie && (
+      <div className="freebie-popup-overlay" onClick={() => setShowFreebiePopup(false)}>
+        <div className="freebie-popup" onClick={(e) => e.stopPropagation()}>
+          <div className="freebie-popup-icon">🍨</div>
+          <h2 className="freebie-popup-title">You Won a Free Mini Sundae!</h2>
+          <p className="freebie-popup-desc">Worth ₹{freebie.value} — included with your spin!</p>
+          <p className="freebie-popup-hint">Show this at the counter to claim</p>
+          <button className="freebie-popup-btn" onClick={() => setShowFreebiePopup(false)}>
+            Awesome!
+          </button>
+        </div>
+      </div>
+    )}
+    </>
   )
 }

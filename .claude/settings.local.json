@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vite *)",
+      "Bash(npm install *)",
+      "Bash(node *)",
+      "Bash(curl -s http://localhost:3001/api/health)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -s http://localhost:3001/api/jackpot/count)",
+      "Bash(curl -s http://localhost:3000/api/jackpot/count)",
+      "Bash(xargs kill -9)",
+      "Bash(curl -s http://localhost:3001/api/user/9876543210)",
+      "Bash(python3 -c \"import sys,json; print\\(json.load\\(sys.stdin\\)['status']\\)\")"
+    ]
+  }
+}
